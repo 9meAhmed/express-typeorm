@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import express from "express";
-import { AppDataSource } from "./config/data-source.ts";
+import { AppDataSource } from "./config/data-source.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
