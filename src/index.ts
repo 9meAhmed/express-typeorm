@@ -1,9 +1,15 @@
 import "reflect-metadata";
 import express from "express";
+import { Request, Response } from "express";
 import { AppDataSource } from "./config/data-source.js";
+
+import { userRouter } from "./routes/user.routes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(express.json());
+app.use("/api", userRouter);
 
 AppDataSource.initialize()
   .then(async () => {
