@@ -6,8 +6,14 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
+enum userRoles {
+  ADMIN = "admin",
+  PATIENT = "patient",
+  DOCTOR = "doctor",
+}
+
 @Entity({ name: "users" })
-export class User {
+export default class User {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -23,11 +29,11 @@ export class User {
   @Column({ nullable: false })
   password: string;
 
-  @Column({ default: "user" })
-  role: string;
+  @Column({ type: "enum", enum: userRoles, default: userRoles.PATIENT })
+  role: userRoles;
 
-  // @Column({ default: false })
-  // isVerified: boolean;
+  @Column({ default: false })
+  isVerified: boolean;
 
   @CreateDateColumn()
   createdAt: Date;

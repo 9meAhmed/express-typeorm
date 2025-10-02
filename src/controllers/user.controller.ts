@@ -1,18 +1,19 @@
 import { Request, Response } from "express";
-import { User } from "../entity/User.js";
-import { AppDataSource } from "../config/data-source.js";
-
+import { userRepository } from "../repository/index.js";
 export class UserController {
   static async getAllUsers(req: Request, res: Response) {
-    const userRepository = AppDataSource.getRepository(User);
-    const users = await userRepository.find();
+    const users = await userRepository.findAll();
     res.json(users);
   }
 
   static async createUser(req: Request, res: Response) {
-    const userRepository = AppDataSource.getRepository(User);
-    const user = userRepository.create(req.body);
-    await userRepository.save(user);
+    const user = await userRepository.createUser(req.body);
     res.status(201).json(user);
+  }
+
+  static async updateUser(req: Request, res: Response) {
+    const userId = Number(req.params.id);
+    const user = await userRepository.updateUser(userId, req.body);
+    res.status(200).json(user);
   }
 }
