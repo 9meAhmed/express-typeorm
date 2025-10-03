@@ -1,5 +1,6 @@
 import { Repository } from "typeorm";
 import { User } from "../entity/index.js";
+import Encrypt from "../helpers/encrypt.helper.js";
 
 export class UserService {
   constructor(private userRepository: Repository<User>) {}
@@ -12,8 +13,17 @@ export class UserService {
     return this.userRepository.findOneBy({ id });
   }
 
+  async findByEmail(email: string): Promise<User | null> {
+    return this.userRepository.findOneBy({ email });
+  }
+
   async createUser(user: User): Promise<User> {
-    const newUser = this.userRepository.create(user);
+    const payload = {
+      ...user,
+      password: await Encrypt.hashPassword(user.password),
+    };
+
+    const newUser = this.userRepository.create(payload);
     await this.userRepository.save(newUser);
     return newUser;
   }

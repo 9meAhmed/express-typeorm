@@ -4,11 +4,13 @@ import { Request, Response } from "express";
 import { AppDataSource } from "./config/data-source.js";
 
 import { userRouter } from "./routes/user.routes.js";
+import { authRouter } from "./routes/auth.routes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use("/api", authRouter);
 app.use("/api", userRouter);
 
 AppDataSource.initialize()
